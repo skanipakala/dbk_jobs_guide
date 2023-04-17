@@ -1,7 +1,8 @@
 import 'dart:convert';
+import 'dart:typed_data';
 import 'package:dbk_jobs_guide/constants_iui.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart' show rootBundle;
 import 'package:http/http.dart' as http;
 import 'package:jiffy/jiffy.dart';
 import 'package:xml2json/xml2json.dart';
@@ -15,6 +16,7 @@ class DataEngine {
   static List uniqueDept = [];
   static List uniqueUnit = [];
   static List uniqueWorkgroup = [];
+  static List uniqueYears = [];
 
   static List<DropdownMenuItem<String>> metadataUnits = [];
   static List<DropdownMenuItem<String>> metadataWorkgroups = [];
@@ -30,48 +32,65 @@ class DataEngine {
   static Map unitToWorkgroup = {};
   static Map departmentToUnit = {};
 
+  static Future<String?> getFileContents(String filePath) async {
+    // replace with your file path
+    final Reference reference = FirebaseStorage.instance.ref(filePath);
+    print("REQUEST RESOURCE PATH --> ${reference.fullPath}");
+
+    try {
+      final String url = await reference.getDownloadURL();
+      final response = await http.get(Uri.parse(CORS_AWS + url));
+      final Uint8List data = response.bodyBytes;
+      final String contents = utf8.decode(data);
+      return contents;
+    } catch (e) {
+      print('Error reading file: $e');
+      return null;
+    }
+  }
+
   static initialize() {}
 
   static Future<Map> readReviewJSON() async {
     print("calling readReviewJSON!");
-    final String response = await rootBundle.loadString('assets/data/unit_reviews.json');
-    unitReviews = await json.decode(response);
+    // final String response = await rootBundle.loadString('assets/data/unit_reviews.json');
+    final String? response = await getFileContents("unit_reviews.json");
+    unitReviews = await json.decode(response!);
     print("read from unit_reviews.json success!");
     return unitReviews;
   }
 
   static Future<Map> readJSON() async {
-    print("calling readJSON!");
-    final String response = await rootBundle.loadString('assets/data/sample_year.json');
-    masterDict = await json.decode(response);
-    print("read from sample_year.json success!");
+    // print("calling readJSON!");
+    // final String response = await rootBundle.loadString('assets/data/sample_year.json');
+    // masterDict = await json.decode(response);
+    // print("read from sample_year.json success!");
+    // return masterDict;
+
+    final String? response = await getFileContents("sample_year.json");
+    final Map<String, dynamic> masterDict = json.decode(response!);
+    print("read from Firebase Storage success!");
     return masterDict;
   }
 
   static Future<Map> readMetaData() async {
     print("reading metadata");
-    final String response = await rootBundle.loadString('assets/data/sample_metadata.json');
-    DataEngine.metaData = await json.decode(response);
+
+    final String? response = await getFileContents("sample_metadata.json");
+    DataEngine.metaData = await json.decode(response!);
+
     print("read from sample_metadata.json success!");
 
+    DataEngine.uniqueYears = DataEngine.metaData['unique_years'];
     DataEngine.uniqueDept = DataEngine.metaData['unique_department'];
     DataEngine.uniqueUnit = DataEngine.metaData['unique_unit'];
     DataEngine.uniqueWorkgroup = DataEngine.metaData['unique_workgroup'];
 
-    // DataEngine.uniqueDept.sort();
-    // DataEngine.uniqueUnit.sort();
-    // DataEngine.uniqueWorkgroup.sort();
-
     DataEngine.metadataUnits = uniqueUnit.map((e) => DropdownMenuItem<String>(value: e, child: Text(e))).toList();
-
-    DataEngine.metadataWorkgroups =
-        uniqueWorkgroup.map((e) => DropdownMenuItem<String>(value: e, child: Text(e))).toList();
-
+    DataEngine.metadataWorkgroups = uniqueWorkgroup.map((e) => DropdownMenuItem<String>(value: e, child: Text(e))).toList();
     DataEngine.metadataDepartments = uniqueDept.map((e) => DropdownMenuItem<String>(value: e, child: Text(e))).toList();
-
     print("metadataUnits.length > ${metadataUnits.length}");
     print("metadataWorkgroups.length > ${metadataWorkgroups.length}");
-
     loadUnitSubFilters();
     loadWorkgroupSubFilters();
 
@@ -79,21 +98,19 @@ class DataEngine {
   }
 
   static loadWorkgroupSubFilters() async {
-    final String response = await rootBundle.loadString('assets/data/unitToWorkgroup.json');
-    DataEngine.unitToWorkgroup = await json.decode(response);
+    // final String response = await rootBundle.loadString('assets/data/unitToWorkgroup.json');
+    final String? response = await getFileContents("unitToWorkgroup.json");
+    DataEngine.unitToWorkgroup = await json.decode(response!);
   }
 
   static loadUnitSubFilters() async {
-    final String response = await rootBundle.loadString('assets/data/departmentToUnit.json');
-    DataEngine.departmentToUnit = await json.decode(response);
+    final String? response = await getFileContents("departmentToUnit.json");
+    DataEngine.departmentToUnit = await json.decode(response!);
   }
 
   static applyUnitFilters(Map currentFilters) {
-    if (currentFilters['department'] == "" ||
-        currentFilters['department'] == null ||
-        currentFilters['department'] == 'All') {
-      DataEngine.metadataDepartments =
-          uniqueDept.map((e) => DropdownMenuItem<String>(value: e, child: Text(e))).toList();
+    if (currentFilters['department'] == "" || currentFilters['department'] == null || currentFilters['department'] == 'All') {
+      DataEngine.metadataDepartments = uniqueDept.map((e) => DropdownMenuItem<String>(value: e, child: Text(e))).toList();
     } else {
       List specificUnits = DataEngine.departmentToUnit[currentFilters['department']];
       DataEngine.metadataUnits = specificUnits.map((e) => DropdownMenuItem<String>(value: e, child: Text(e))).toList();
@@ -102,12 +119,10 @@ class DataEngine {
 
   static applyWorkgroupFilters(Map currentFilters) {
     if (currentFilters['unit'] == null || currentFilters['unit'] == "" || currentFilters['unit'] == "All") {
-      DataEngine.metadataWorkgroups =
-          uniqueWorkgroup.map((e) => DropdownMenuItem<String>(value: e, child: Text(e))).toList();
+      DataEngine.metadataWorkgroups = uniqueWorkgroup.map((e) => DropdownMenuItem<String>(value: e, child: Text(e))).toList();
     } else {
       List specificWorkgroups = DataEngine.unitToWorkgroup[currentFilters['unit']];
-      DataEngine.metadataWorkgroups =
-          specificWorkgroups.map((e) => DropdownMenuItem<String>(value: e, child: Text(e))).toList();
+      DataEngine.metadataWorkgroups = specificWorkgroups.map((e) => DropdownMenuItem<String>(value: e, child: Text(e))).toList();
     }
   }
 
@@ -140,8 +155,7 @@ class DataEngine {
   }
 
   static fetchRSSNewsFeed() async {
-    final response = await http.get(
-        Uri.parse("https://api.rss2json.com/v1/api.json?rss_url=https%3A%2F%2Fdbknews.com%2Ftag%2Fwages%2Ffeed%2F"));
+    final response = await http.get(Uri.parse("https://api.rss2json.com/v1/api.json?rss_url=https%3A%2F%2Fdbknews.com%2Ftag%2Fwages%2Ffeed%2F"));
     return jsonDecode(response.body);
   }
 }

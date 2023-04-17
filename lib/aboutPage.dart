@@ -65,10 +65,10 @@ class _AboutPageState extends State<AboutPage> {
                                   onTap: () {
                                     html.window.open("onlineumdbk@gmail.com", 'new tab');
                                   },
-                                  child: const Column(
+                                  child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.center,
                                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                    children: [Icon(Icons.email), Text("Send feedback")],
+                                    children: const [Icon(Icons.email), Text("Send feedback")],
                                   ),
                                 ),
                               ),
@@ -82,10 +82,10 @@ class _AboutPageState extends State<AboutPage> {
                                   onTap: () {
                                     html.window.open("https://dbknews.com/tips/", 'new tab');
                                   },
-                                  child: const Column(
+                                  child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.center,
                                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                    children: [Icon(Icons.newspaper), Text("Submit News Tip")],
+                                    children: const [Icon(Icons.newspaper), Text("Submit News Tip")],
                                   ),
                                 ),
                               ),
@@ -99,10 +99,10 @@ class _AboutPageState extends State<AboutPage> {
                                   onTap: () {
                                     html.window.open("https://salaryguide.dbknews.com/", 'new tab');
                                   },
-                                  child: const Column(
+                                  child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.center,
                                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                    children: [Icon(Icons.attach_money_rounded), Text("DBK Salary Guide")],
+                                    children: const [Icon(Icons.attach_money_rounded), Text("DBK Salary Guide")],
                                   ),
                                 ),
                               ),
@@ -127,10 +127,7 @@ class _AboutPageState extends State<AboutPage> {
                       scrollDirection: Axis.horizontal,
                       children: [
                         {'name': 'facebook', 'link': 'https://www.facebook.com/TheDiamondback/'},
-                        {
-                          'name': 'twitter',
-                          'link': 'https://twitter.com/thedbk?ref_src=twsrc%5Egoogle%7Ctwcamp%5Eserp%7Ctwgr%5Eauthor'
-                        },
+                        {'name': 'twitter', 'link': 'https://twitter.com/thedbk?ref_src=twsrc%5Egoogle%7Ctwcamp%5Eserp%7Ctwgr%5Eauthor'},
                         {'name': 'youtube', 'link': 'https://www.youtube.com/user/DiamondbackVideo'},
                         {'name': 'instagram', 'link': 'https://www.instagram.com/thedbk/?hl=en'},
                       ].map((e) {

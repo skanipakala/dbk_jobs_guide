@@ -1,6 +1,7 @@
 import 'package:dbk_jobs_guide/constants_iui.dart';
 import 'package:dbk_jobs_guide/decider.dart';
 import 'package:dbk_jobs_guide/keys.dart';
+
 import 'package:dbk_jobs_guide/navButtons.dart';
 import 'package:dbk_jobs_guide/searchBox.dart';
 import 'package:dbk_jobs_guide/sideDrawer.dart';
@@ -18,7 +19,10 @@ void main() async {
   // You may need to fill in the below API keys if you want to track clicks, navigation, and other user engagement metrics
   await Firebase.initializeApp(
       options: const FirebaseOptions(
-          apiKey: apiKey, appId: appId, messagingSenderId: messagingSenderId, projectId: projectId));
+          apiKey: apiKey, appId: appId, messagingSenderId: messagingSenderId, projectId: projectId, storageBucket: storageBucket));
+
+  // Initialize Firebase Storage
+  // FirebaseStorage.instance.ref();
 
   SharedPreferences prefs = await SharedPreferences.getInstance();
   await prefs.clear();
@@ -71,6 +75,7 @@ class _WageSearchPageState extends State<WageSearchPage> {
     return Scaffold(
       drawer: const SideDrawer(),
       body: Column(
+        
         children: [
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -97,8 +102,6 @@ class _WageSearchPageState extends State<WageSearchPage> {
 
           //
           Expanded(
-            // height: MediaQuery.of(context).size.height - 240,
-            // width: MediaQuery.of(context).size.width - 10,
             child: SingleChildScrollView(
               child: ValueListenableBuilder(
                   valueListenable: controlDecider,
@@ -155,8 +158,7 @@ class FancyDBKBar extends StatelessWidget {
                     ),
                     Text(
                       "WAGE GUIDE",
-                      style: TextStyle(
-                          fontSize: 60, fontWeight: FontWeight.bold, color: dbkRed, fontFamily: 'AgencyFB-Bold'),
+                      style: TextStyle(fontSize: 60, fontWeight: FontWeight.bold, color: dbkRed, fontFamily: 'AgencyFB-Bold'),
                     ),
                   ],
                 ),

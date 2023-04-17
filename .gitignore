@@ -38,6 +38,8 @@ migrate_working_dir/
 /linux/
 /windows/
 /amplify/
+/lib/keys.dart
+/test/
 
 #Sensitive firebase data
 .firebaserc

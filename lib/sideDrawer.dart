@@ -33,8 +33,7 @@ class SideDrawer extends StatelessWidget {
                 const SizedBox(height: 50),
                 InkWell(
                   onTap: () {
-                    Navigator.of(context)
-                        .pushReplacement(MaterialPageRoute(builder: (context) => const WageSearchPage()));
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => const WageSearchPage()));
                   },
                   child: const ListTile(
                       leading: Icon(
@@ -80,8 +79,7 @@ class SideDrawer extends StatelessWidget {
                 InkWell(
                   onTap: () {
                     // html.window.open(submitReview, 'new tab');
-                    Navigator.of(context)
-                        .pushReplacement(MaterialPageRoute(builder: (context) => const SubmitReviewScreen()));
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => const SubmitReviewScreen()));
                   },
                   child: const ListTile(
                       leading: Icon(
@@ -138,11 +136,11 @@ class SideDrawer extends StatelessWidget {
                   child: TextButton.icon(
                       style: TextButton.styleFrom(foregroundColor: Colors.white),
                       onPressed: () {},
-                      icon: const Icon(Icons.code_rounded, size: 15),
+                      icon: const Icon(Icons.developer_mode_sharp, size: 25),
                       label: const Text(
-                        "Coded by Sri Kanipakala (3/1)",
+                        "Coded by Sri Kanipakala 4.17",
                         textAlign: TextAlign.start,
-                        style: TextStyle(fontSize: 12),
+                        style: TextStyle(fontSize: 14),
                       )),
                 ),
               ],

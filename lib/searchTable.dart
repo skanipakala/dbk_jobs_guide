@@ -66,13 +66,9 @@ class _SearchTableState extends State<SearchTable> {
       // Checking main filters (if added)
       if ((e['year'] == filterState['year']) &&
           (e['education'] == filterState['education'] || filterState['education'] == "All") &&
-          (e['department'] == filterState['department'] ||
-              filterState['department'] == null ||
-              filterState['department'] == "All") &&
+          (e['department'] == filterState['department'] || filterState['department'] == null || filterState['department'] == "All") &&
           (e['unit'] == filterState['unit'] || filterState['unit'] == null || filterState['unit'] == "All") &&
-          (e['workgroup'] == filterState['workgroup'] ||
-              filterState['workgroup'] == null ||
-              filterState['workgroup'] == "All")) {
+          (e['workgroup'] == filterState['workgroup'] || filterState['workgroup'] == null || filterState['workgroup'] == "All")) {
         // Checking keyword matches from search box
         if (checkEachColumnWithSplit(query, e)) {
           finalFiltered.add(e);
@@ -150,8 +146,7 @@ class _SearchTableState extends State<SearchTable> {
               Padding(
                 padding: const EdgeInsets.all(3.0),
                 child: Row(
-                  mainAxisAlignment:
-                      Responsive.isMobile(context) ? MainAxisAlignment.spaceEvenly : MainAxisAlignment.center,
+                  mainAxisAlignment: Responsive.isMobile(context) ? MainAxisAlignment.spaceEvenly : MainAxisAlignment.center,
                   children: [
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -173,9 +168,7 @@ class _SearchTableState extends State<SearchTable> {
                                 curSortAscending = !curSortAscending;
                               });
                             },
-                            icon: curSortAscending
-                                ? const Icon(Icons.arrow_upward_rounded)
-                                : const Icon(Icons.arrow_downward_rounded),
+                            icon: curSortAscending ? const Icon(Icons.arrow_upward_rounded) : const Icon(Icons.arrow_downward_rounded),
                             label: const Text("Sort wages"))
                         : Container()
                   ],
@@ -192,8 +185,7 @@ class _SearchTableState extends State<SearchTable> {
                             onTap: () {
                               showModalBottomSheet<void>(
                                 isScrollControlled: true,
-                                shape:
-                                    const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(20))),
+                                shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(20))),
                                 context: context,
                                 builder: (BuildContext context) {
                                   return SizedBox(height: 500, child: ReviewPopup(cur: cur));
@@ -212,8 +204,7 @@ class _SearchTableState extends State<SearchTable> {
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         mainAxisAlignment: MainAxisAlignment.center,
                                         children: [
-                                          Text("${cur['workgroup']}",
-                                              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                                          Text("${cur['workgroup']}", style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
                                           const SizedBox(height: 2),
                                           Text(
                                             "▶ ${cur['department']}",
@@ -237,12 +228,11 @@ class _SearchTableState extends State<SearchTable> {
                                           Container(),
                                           Text(
                                             "\$${(cur['wage'] as double).toStringAsFixed(2)}",
-                                            style: const TextStyle(
-                                                fontSize: 30, color: Colors.red, fontWeight: FontWeight.bold),
+                                            style: const TextStyle(fontSize: 30, color: Colors.red, fontWeight: FontWeight.bold),
                                           ),
                                           DataEngine.unitReviews[cur['unit']]['reviews'].length > 0
-                                              ? const Row(
-                                                  children: [
+                                              ? Row(
+                                                  children: const [
                                                     Text(
                                                       "See reviews",
                                                     ),
@@ -351,10 +341,10 @@ class MyData extends DataTableSource {
             DataEngine.unitReviews[inputData[index]['unit']]['reviews'].length > 0
                 ? Container(
                     decoration: tagDecoration,
-                    child: const Padding(
-                        padding: EdgeInsets.all(5.0),
+                    child: Padding(
+                        padding: const EdgeInsets.all(5.0),
                         child: Row(
-                          children: [Icon(Icons.arrow_outward_rounded), Text("See Reviews")],
+                          children: const [Icon(Icons.arrow_outward_rounded), Text("See Reviews")],
                         )))
                 : Container()
           ],

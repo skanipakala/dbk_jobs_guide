@@ -24,6 +24,8 @@ class _SmartFiltersState extends State<SmartFilters> {
   Map filterState = {};
   bool opened = false;
 
+  List availableYears = [];
+
   getLatestFilters() async {
     print("[!] Triggering getLatestFilters");
     if (DataEngine.metaData == {} || DataEngine.metaData.isEmpty) {
@@ -33,6 +35,8 @@ class _SmartFiltersState extends State<SmartFilters> {
       print("Avoided metadata.JSON fetch 😀");
     }
 
+    availableYears = DataEngine.metaData['unique_years'];
+
     // LOADING FILTER_STATE:
     SharedPreferences prefs = await SharedPreferences.getInstance();
     // prefs.clear();
@@ -40,13 +44,7 @@ class _SmartFiltersState extends State<SmartFilters> {
     if (prefs.containsKey("filterState")) {
       filterState = jsonDecode(prefs.getString("filterState")!);
     } else {
-      filterState = {
-        'year': '2022',
-        'education': 'undergraduate',
-        'department': 'All',
-        'unit': 'All',
-        'workgroup': 'All'
-      };
+      filterState = {'year': '2022', 'education': 'undergraduate', 'department': 'All', 'unit': 'All', 'workgroup': 'All'};
     }
   }
 
@@ -108,19 +106,17 @@ class _SmartFiltersState extends State<SmartFilters> {
                         childrenPadding: const EdgeInsets.all(5),
                         initiallyExpanded: opened,
                         shape: const RoundedRectangleBorder(
-                            side: BorderSide(color: Colors.grey, width: 1),
-                            borderRadius: BorderRadius.all(Radius.circular(10))),
+                            side: BorderSide(color: Colors.grey, width: 1), borderRadius: BorderRadius.all(Radius.circular(10))),
                         collapsedShape: const RoundedRectangleBorder(
-                            side: BorderSide(color: Colors.grey, width: 1),
-                            borderRadius: BorderRadius.all(Radius.circular(10))),
+                            side: BorderSide(color: Colors.grey, width: 1), borderRadius: BorderRadius.all(Radius.circular(10))),
 
                         collapsedIconColor: Colors.black,
                         iconColor: Colors.white,
 
                         title: !opened
-                            ? const Row(
+                            ? Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
+                                children: const [
                                   Icon(Icons.filter_list_sharp, size: 30, color: Colors.grey),
                                   SizedBox(width: 5),
                                   Text("Open Filters", textAlign: TextAlign.center, style: TextStyle(fontSize: 15)),
@@ -128,13 +124,12 @@ class _SmartFiltersState extends State<SmartFilters> {
                               )
                             : Container(
                                 // color: dbkRed,
-                                child: const Row(
+                                child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
+                                children: const [
                                   Icon(Icons.close, size: 30, color: Colors.white),
                                   SizedBox(width: 5),
-                                  Text("Close Filters",
-                                      textAlign: TextAlign.center, style: TextStyle(fontSize: 15, color: Colors.white)),
+                                  Text("Close Filters", textAlign: TextAlign.center, style: TextStyle(fontSize: 15, color: Colors.white)),
                                 ],
                               )),
                         children: [
@@ -198,11 +193,11 @@ class _SmartFiltersState extends State<SmartFilters> {
       },
       child: Container(
         decoration: resetButton,
-        child: const Padding(
-          padding: EdgeInsets.fromLTRB(8, 5, 8, 5),
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(8, 5, 8, 5),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
+            children: const [
               Icon(
                 Icons.restart_alt_rounded,
                 color: Colors.white,
@@ -224,9 +219,7 @@ class _SmartFiltersState extends State<SmartFilters> {
             isExpanded: true,
             name: 'year',
             initialValue: filterState['year'],
-            items: ['2018', '2019', '2020', '2021', '2022']
-                .map((e) => DropdownMenuItem(value: e, child: Text(e)))
-                .toList(),
+            items: availableYears.map((e) => DropdownMenuItem(value: e, child: Text(e))).toList(),
             onChanged: (newVal) {
               saveFilterValue('year');
             },
