@@ -2,9 +2,9 @@
 
 <!-- ![High Quality Image](https://i.ibb.co/6t3mvfM/HIGH-QUALITYT.png) -->
 
- <img src="https://i.ibb.co/6t3mvfM/HIGH-QUALITYT.png" alt="High Quality Image" width="600"/>
+ <img src="https://i.ibb.co/6t3mvfM/HIGH-QUALITYT.png" alt="High Quality Image"/>
 
-  <img src="https://i.ibb.co/wBtg53Z/unnamed-removebg-preview.png" alt="High Quality Image" width="600"/>
+  <img src="https://i.ibb.co/wBtg53Z/unnamed-removebg-preview.png" alt="High Quality Image"/>
 
 ## About
 
