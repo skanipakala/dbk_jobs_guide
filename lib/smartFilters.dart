@@ -44,7 +44,7 @@ class _SmartFiltersState extends State<SmartFilters> {
     if (prefs.containsKey("filterState")) {
       filterState = jsonDecode(prefs.getString("filterState")!);
     } else {
-      filterState = {'year': '2022', 'education': 'undergraduate', 'department': 'All', 'unit': 'All', 'workgroup': 'All'};
+      filterState = {'year': availableYears.last.toString(), 'education': 'undergraduate', 'department': 'All', 'unit': 'All', 'workgroup': 'All'};
     }
   }
 
