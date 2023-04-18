@@ -2,14 +2,9 @@
 
 <!-- ![High Quality Image](https://i.ibb.co/6t3mvfM/HIGH-QUALITYT.png) -->
 
-<div style="display:flex;">
-  <div style="flex:1;padding-right:5px;">
-    <img src="https://i.ibb.co/6t3mvfM/HIGH-QUALITYT.png" alt="High Quality Image" width="600"/>
-  </div>
-  <div style="flex:1;padding-left:5px;">
-    <img src="https://i.ibb.co/wBtg53Z/unnamed-removebg-preview.png" alt="High Quality Image" width="600"/>
-  </div>
-</div>
+ <img src="https://i.ibb.co/6t3mvfM/HIGH-QUALITYT.png" alt="High Quality Image" width="600"/>
+
+  <img src="https://i.ibb.co/wBtg53Z/unnamed-removebg-preview.png" alt="High Quality Image" width="600"/>
 
 ## About
 
