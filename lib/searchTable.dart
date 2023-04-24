@@ -23,19 +23,38 @@ class _SearchTableState extends State<SearchTable> {
   // MyData source = MyData(inputData: [], context: context);
 
   // Data processing and applying filters will take place here
+
+  List availableYears = [];
+
   getData() async {
     print("INSIDE GET DATA");
     masterList = [];
 
     if (DataEngine.unitReviews == {} || DataEngine.unitReviews.isEmpty) {
       await DataEngine.readReviewJSON();
+
+      //[!] Patch fix here to load latest year data.
+      //[!] Gist is that SearchTable() needs "availableYears" but that requires parsing data from DE.metaData
+      //[!] Change it so it
+      if (DataEngine.uniqueYears == [] || DataEngine.uniqueYears.isEmpty) {
+        await DataEngine.getLatestYears();
+      }
     }
+
+    availableYears = DataEngine.uniqueYears;
 
     // await Future.delayed(const Duration(milliseconds: 600));
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    Map filterState = {'year': '2022', 'education': 'undergraduate', 'unit': null, 'workgroup': null};
+    print("▶️▶️▶️ available years = $availableYears");
+
+    String showYear = availableYears[availableYears.length - 1] ?? '2023';
+
+    Map filterState = {'year': showYear, 'education': 'undergraduate', 'unit': null, 'workgroup': null};
+
+    print("⬅️⬅️⬅️⬅️ successfully built the filterState obj");
+
     if (prefs.containsKey("filterState")) {
       filterState = Map.of(jsonDecode(prefs.getString("filterState")!));
     }
@@ -43,11 +62,14 @@ class _SearchTableState extends State<SearchTable> {
     print("👉👉👉👉👉 INPUT FILTER STATE$filterState");
 
     if (DataEngine.masterDict == {} || DataEngine.masterDict.isEmpty) {
-      Map getDict = await DataEngine.readJSON();
-      masterList = getDict[filterState['year']];
+      await DataEngine.readJSON();
+      masterList = DataEngine.masterDict[filterState['year']];
     } else {
       masterList = DataEngine.masterDict[filterState['year']];
     }
+
+    // Map getDict = await DataEngine.readJSON();
+    // masterList = getDict[filterState['year']];
 
     List finalFiltered = [];
 
@@ -230,7 +252,8 @@ class _SearchTableState extends State<SearchTable> {
                                             "\$${(cur['wage'] as double).toStringAsFixed(2)}",
                                             style: const TextStyle(fontSize: 30, color: Colors.red, fontWeight: FontWeight.bold),
                                           ),
-                                          DataEngine.unitReviews[cur['unit']]['reviews'].length > 0
+                                          DataEngine.unitReviews[cur['unit']].containsKey('reviews') &&
+                                                  DataEngine.unitReviews[cur['unit']]['reviews'].length > 0
                                               ? Row(
                                                   children: const [
                                                     Text(
@@ -338,7 +361,9 @@ class MyData extends DataTableSource {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(inputData[index]["unit"].toString(), style: otherCellStyle),
-            DataEngine.unitReviews[inputData[index]['unit']]['reviews'].length > 0
+            DataEngine.unitReviews[inputData[index]['unit']] != null &&
+                    DataEngine.unitReviews[inputData[index]['unit']].containsKey('reviews') &&
+                    DataEngine.unitReviews[inputData[index]['unit']]['reviews'].length > 0
                 ? Container(
                     decoration: tagDecoration,
                     child: Padding(

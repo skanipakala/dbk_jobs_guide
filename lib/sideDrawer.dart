@@ -138,7 +138,7 @@ class SideDrawer extends StatelessWidget {
                       onPressed: () {},
                       icon: const Icon(Icons.developer_mode_sharp, size: 25),
                       label: const Text(
-                        "Coded by Sri Kanipakala 4.17",
+                        "Coded by Sri Kanipakala 4.23",
                         textAlign: TextAlign.start,
                         style: TextStyle(fontSize: 14),
                       )),

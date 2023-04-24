@@ -35,7 +35,7 @@ class _SmartFiltersState extends State<SmartFilters> {
       print("Avoided metadata.JSON fetch 😀");
     }
 
-    availableYears = DataEngine.metaData['unique_years'];
+    availableYears = DataEngine.uniqueYears;
 
     // LOADING FILTER_STATE:
     SharedPreferences prefs = await SharedPreferences.getInstance();

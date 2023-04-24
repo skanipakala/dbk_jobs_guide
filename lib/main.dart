@@ -14,6 +14,8 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
+
+
   WidgetsFlutterBinding.ensureInitialized();
 
   // You may need to fill in the below API keys if you want to track clicks, navigation, and other user engagement metrics
@@ -75,7 +77,6 @@ class _WageSearchPageState extends State<WageSearchPage> {
     return Scaffold(
       drawer: const SideDrawer(),
       body: Column(
-        
         children: [
           Column(
             mainAxisAlignment: MainAxisAlignment.center,

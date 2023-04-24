@@ -68,9 +68,16 @@ class DataEngine {
     // return masterDict;
 
     final String? response = await getFileContents("sample_year.json");
-    final Map<String, dynamic> masterDict = json.decode(response!);
+    DataEngine.masterDict = json.decode(response!);
     print("read from Firebase Storage success!");
     return masterDict;
+  }
+
+  static getLatestYears() async {
+    final String? response = await getFileContents("sample_metadata.json");
+    DataEngine.metaData = await json.decode(response!);
+    print("read from sample_metadata.json success!");
+    DataEngine.uniqueYears = DataEngine.metaData['unique_years'];
   }
 
   static Future<Map> readMetaData() async {
